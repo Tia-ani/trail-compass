@@ -29,13 +29,11 @@ export default function CompassScreen({ navigation }) {
 
     const askForPermission = async () => {
       // TODO a) Ask for location permission
-      const askForPermission = async () => {
         const {status}=await Location.requestForegroundPermissionsAsync()
         if (status!=="granted") {
           setSnack("Permission denied");
           return;
         }
-      }
       
       // TODO b) Get One-time position and save the coordinates
       const pos=await Location.getCurrentPositionAsync({})
@@ -122,13 +120,13 @@ export default function CompassScreen({ navigation }) {
   
     setPins(ans)
     await savePins(ans)
-    setSnack("TODO: save pin");
+    setSnack("Pin saved!");
   };
   
 
   const copyCoords = async () => {
     if (!coords) {
-      setSnack("TODO: copy coords");
+      setSnack("Copied to clipboard!")
       return;
     }
     // TODO(3): Clipboard.setStringAsync("lat, lon") then snackbar
@@ -140,11 +138,11 @@ export default function CompassScreen({ navigation }) {
 
   const shareCoords = async () => {
     if (!coords) {
-      setSnack("TODO: share");
+      setSnack("Location shared!")
       return;
     }
     // TODO(4): Share.share with message including coords + heading + cardinal
-    const ans=`My Current Location: ${coords.latitude},${coords.longitude}, ${toCardinal(coords.heading)}`
+    const ans=`My Current Location: ${coords.latitude},${coords.longitude}, ${toCardinal(heading)}`
     await Share.share({ message: ans })
   };
 

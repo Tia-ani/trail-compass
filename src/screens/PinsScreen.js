@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Share } from "react-native";
 import { Card, List, IconButton, Text, Snackbar } from "react-native-paper";
 import { loadPins, savePins } from "../storage";
+import { toCardinal } from "../utils/geo";
 
 export default function PinsScreen() {
   const [pins, setPins] = useState([]);
@@ -11,6 +12,7 @@ export default function PinsScreen() {
     // TODO(5): Load saved pins into state on mount
     const loadData=async()=>{
       const data=await loadPins()
+      setPins(data)
     }
     loadData()
   }, []);
@@ -21,15 +23,16 @@ export default function PinsScreen() {
     // TODO(6): Delete pin by id and persist via savePins(next)
     const filteredData=pins.filter((p)=>p.id!==id)
     setPins(filteredData)
-    setSnack("TODO: delete pin");
-  };
+    await savePins(filteredData)
+    setSnack("Pin deleted!")
+  }
   
 
   const sharePin = async (p) => {
     // TODO(7): Share pin location nicely (include timestamp if you like)
     const msg=`Sharing Pin:${p.lat}, ${p.lon} Heading: ${toCardinal(p.heading)}`
     await Share.share({ message: msg })
-    setSnack("TODO: share pin");
+    setSnack("Pin shared!")
   };
 
   return (
