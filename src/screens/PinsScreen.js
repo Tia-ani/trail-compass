@@ -9,15 +9,26 @@ export default function PinsScreen() {
 
   useEffect(() => {
     // TODO(5): Load saved pins into state on mount
+    const loadData=async()=>{
+      const data=await loadPins()
+    }
+    loadData()
   }, []);
+
+  
 
   const remove = async (id) => {
     // TODO(6): Delete pin by id and persist via savePins(next)
+    const filteredData=pins.filter((p)=>p.id!==id)
+    setPins(filteredData)
     setSnack("TODO: delete pin");
   };
+  
 
   const sharePin = async (p) => {
     // TODO(7): Share pin location nicely (include timestamp if you like)
+    const msg=`Sharing Pin:${p.lat}, ${p.lon} Heading: ${toCardinal(p.heading)}`
+    await Share.share({ message: msg })
     setSnack("TODO: share pin");
   };
 

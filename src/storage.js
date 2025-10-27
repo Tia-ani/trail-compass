@@ -1,16 +1,23 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const KEY = "TRAIL_COMPASS_PINS_V1";
 
-// TODO: Load the saved pins
+// Load the saved pins
 export async function loadPins() {
   try {
-  } catch {
+    const json=await AsyncStorage.getItem(KEY)
+    return json? JSON.parse(json):[]
+  } catch (err) {
+    console.error("Error loading pins:", err)
     return [];
   }
 }
 
-// TODO: Save the pins locally
+// Save the pins locally
 export async function savePins(pins) {
   try {
-  } catch {}
+    const json=JSON.stringify(pins)
+    await AsyncStorage.setItem(KEY, json)
+  } catch (err) {
+    console.error("Error saving pins:", err)
+  }
 }
